@@ -90,7 +90,8 @@
         ],
         "phpstan": "vendor/bin/phpstan analyse",
         "phpcs": "vendor/bin/phpcs",
-        "phpcbf": "vendor/bin/phpcbf"
+        "phpcbf": "vendor/bin/phpcbf",
+        "fixtures": "bin/console doctrine:fixtures:load --no-interaction"
     },
     "conflict": {
         "symfony/symfony": "*"
@@ -102,6 +103,7 @@
         }
     },
     "require-dev": {
+        "doctrine/doctrine-fixtures-bundle": "^4.3",
         "phpstan/extension-installer": "^1.4",
         "phpstan/phpstan": "^2.1",
         "phpstan/phpstan-doctrine": "^2.0",
