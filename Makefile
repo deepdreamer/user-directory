@@ -1,4 +1,4 @@
-.PHONY: build up down init bash
+.PHONY: build up down init bash phpstan phpcs phpcbf
 
 build:
 	docker compose build
@@ -15,3 +15,12 @@ init:
 
 bash:
 	docker compose exec php bash
+
+phpstan:
+	docker compose exec php composer phpstan
+
+phpcs:
+	docker compose exec php composer phpcs
+
+phpcbf:
+	docker compose exec php composer phpcbf
