@@ -23,7 +23,11 @@
                     <td>{{ contact.surname }}</td>
                     <td>{{ contact.phoneNumber }}</td>
                     <td>{{ contact.email }}</td>
-                    <td>{{ contact.note }}</td>
+                    <td>
+                        {% if contact.note %}
+                            <a href="#" data-controller="modal" data-action="click->modal#open" data-modal-content-value="{{ contact.note }}">Show note</a>
+                        {% endif %}
+                    </td>
                     <td><a href="{{ path('app_contact_edit', {slug: contact.slug}) }}">Edit</a></td>
                 </tr>
             {% else %}
@@ -37,4 +41,9 @@
     <div class="pagination">
         {{ knp_pagination_render(contacts) }}
     </div>
+
+    <dialog data-controller="modal" data-modal-target="dialog">
+        <p data-modal-target="body"></p>
+        <button data-action="click->modal#close">Close</button>
+    </dialog>
 {% endblock %}
