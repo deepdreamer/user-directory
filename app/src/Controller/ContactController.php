@@ -2,11 +2,15 @@
 
 namespace App\Controller;
 
+use App\Entity\Contact;
+use App\Form\ContactType;
 use App\Repository\ContactRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\Routing\Attribute\Route;
 
 class ContactController extends AbstractController
@@ -25,6 +29,28 @@ class ContactController extends AbstractController
 
         return $this->render('contact/index.html.twig', [
             'contacts' => $contacts,
+        ]);
+    }
+
+    #[Route('/{slug}', name: 'app_contact_edit', methods: ['GET', 'POST'])]
+    public function edit(
+        #[MapEntity(mapping: ['slug' => 'slug'])] Contact $contact,
+        Request $request,
+        EntityManagerInterface $entityManager,
+    ): Response {
+        $form = $this->createForm(ContactType::class, $contact);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $contact->updateSlug();
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_contact_edit', ['slug' => $contact->getSlug()]);
+        }
+
+        return $this->render('contact/edit.html.twig', [
+            'contact' => $contact,
+            'form' => $form,
         ]);
     }
 }

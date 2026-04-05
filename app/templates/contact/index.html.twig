@@ -13,6 +13,7 @@
                 <th>Phone</th>
                 <th>Email</th>
                 <th>Note</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -23,10 +24,11 @@
                     <td>{{ contact.phoneNumber }}</td>
                     <td>{{ contact.email }}</td>
                     <td>{{ contact.note }}</td>
+                    <td><a href="{{ path('app_contact_edit', {slug: contact.slug}) }}">Edit</a></td>
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="5">No contacts found.</td>
+                    <td colspan="6">No contacts found.</td>
                 </tr>
             {% endfor %}
         </tbody>

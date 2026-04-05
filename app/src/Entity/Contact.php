@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ContactRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 
 #[ORM\Entity(repositoryClass: ContactRepository::class)]
 class Contact
@@ -13,6 +14,9 @@ class Contact
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
+
+    #[ORM\Column(length: 255, unique: true)]
+    private string $slug;
 
     #[ORM\Column(length: 255)]
     private string $name;
@@ -32,6 +36,26 @@ class Contact
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getSlug(): string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): static
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function updateSlug(): static
+    {
+        $slugger = new AsciiSlugger();
+        $this->slug = strtolower($slugger->slug($this->name . ' ' . $this->surname)->toString());
+
+        return $this;
     }
 
     public function getName(): string

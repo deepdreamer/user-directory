@@ -70,6 +70,7 @@ class ContactFixtures extends Fixture
             $contact->setPhoneNumber($phone);
             $contact->setEmail($email);
             $contact->setNote($note);
+            $contact->updateSlug();
 
             $manager->persist($contact);
         }
