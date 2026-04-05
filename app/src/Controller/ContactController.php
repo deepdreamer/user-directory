@@ -41,16 +41,19 @@ class ContactController extends AbstractController
         $form = $this->createForm(ContactType::class, $contact);
         $form->handleRequest($request);
 
+        $backUrl = $request->query->get('back', $request->headers->get('referer', $this->generateUrl('app_home')));
+
         if ($form->isSubmitted() && $form->isValid()) {
             $contact->updateSlug();
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_contact_edit', ['slug' => $contact->getSlug()]);
+            return $this->redirectToRoute('app_contact_edit', ['slug' => $contact->getSlug(), 'back' => $backUrl]);
         }
 
         return $this->render('contact/edit.html.twig', [
             'contact' => $contact,
             'form' => $form,
+            'backUrl' => $backUrl,
         ]);
     }
 

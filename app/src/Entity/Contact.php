@@ -6,6 +6,7 @@ use App\Repository\ContactRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\String\Slugger\AsciiSlugger;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ContactRepository::class)]
 class Contact
@@ -19,15 +20,19 @@ class Contact
     private string $slug;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
     private string $name;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
     private string $surname;
 
     #[ORM\Column(length: 20, nullable: true)]
     private ?string $phoneNumber = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Email(mode: Assert\Email::VALIDATION_MODE_STRICT)]
     private string $email;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]

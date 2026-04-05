@@ -5,42 +5,44 @@
 {% block body %}
     <h1>Contacts</h1>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Surname</th>
-                <th>Phone</th>
-                <th>Email</th>
-                <th>Note</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for contact in contacts %}
+    <turbo-frame id="contacts-list" data-turbo-action="advance">
+        <table>
+            <thead>
                 <tr>
-                    <td>{{ contact.name }}</td>
-                    <td>{{ contact.surname }}</td>
-                    <td>{{ contact.phoneNumber }}</td>
-                    <td>{{ contact.email }}</td>
-                    <td>
-                        {% if contact.note %}
-                            <a href="#" data-controller="modal" data-action="click->modal#open" data-modal-content-value="{{ contact.note }}">Show note</a>
-                        {% endif %}
-                    </td>
-                    <td><a href="{{ path('app_contact_edit', {slug: contact.slug}) }}">Edit</a></td>
+                    <th>Name</th>
+                    <th>Surname</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Note</th>
+                    <th></th>
                 </tr>
-            {% else %}
-                <tr>
-                    <td colspan="6">No contacts found.</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                {% for contact in contacts %}
+                    <tr>
+                        <td>{{ contact.name }}</td>
+                        <td>{{ contact.surname }}</td>
+                        <td>{{ contact.phoneNumber }}</td>
+                        <td>{{ contact.email }}</td>
+                        <td>
+                            {% if contact.note %}
+                                <a href="#" data-controller="modal" data-action="click->modal#open" data-modal-content-value="{{ contact.note }}">Show note</a>
+                            {% endif %}
+                        </td>
+                        <td><a href="{{ path('app_contact_edit', {slug: contact.slug}) }}" data-turbo-frame="_top">Edit</a></td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6">No contacts found.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
 
-    <div class="pagination">
-        {{ knp_pagination_render(contacts) }}
-    </div>
+        <div class="pagination">
+            {{ knp_pagination_render(contacts) }}
+        </div>
+    </turbo-frame>
 
     <dialog data-controller="modal" data-modal-target="dialog">
         <p data-modal-target="body"></p>

@@ -5,8 +5,16 @@
 {% block body %}
     <h1>Edit {{ contact.name }} {{ contact.surname }}</h1>
 
-    {{ form_start(form) }}
-        {{ form_widget(form) }}
+    {{ form_start(form, {action: path('app_contact_edit', {slug: contact.slug, back: backUrl})}) }}
+        {% for field in form %}
+            {% if field.vars.name != '_token' %}
+                <div>
+                    {{ form_label(field) }}
+                    {{ form_widget(field) }}
+                    {{ form_errors(field) }}
+                </div>
+            {% endif %}
+        {% endfor %}
         <button type="submit">Save</button>
     {{ form_end(form) }}
 
@@ -15,5 +23,5 @@
         <button type="submit">Delete</button>
     </form>
 
-    <a href="{{ path('app_home') }}">Back to list</a>
+    <a href="{{ backUrl }}">Back to list</a>
 {% endblock %}
