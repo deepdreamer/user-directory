@@ -53,4 +53,18 @@ class ContactController extends AbstractController
             'form' => $form,
         ]);
     }
+
+    #[Route('/{slug}/delete', name: 'app_contact_delete', methods: ['POST'])]
+    public function delete(
+        #[MapEntity(mapping: ['slug' => 'slug'])] Contact $contact,
+        Request $request,
+        EntityManagerInterface $entityManager,
+    ): Response {
+        if ($this->isCsrfTokenValid('delete-' . $contact->getId(), $request->getPayload()->getString('_token'))) {
+            $entityManager->remove($contact);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('app_home');
+    }
 }

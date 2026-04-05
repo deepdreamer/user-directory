@@ -10,5 +10,10 @@
         <button type="submit">Save</button>
     {{ form_end(form) }}
 
+    <form action="{{ path('app_contact_delete', {slug: contact.slug}) }}" method="post" onsubmit="return confirm('Are you sure you want to delete this contact?')">
+        <input type="hidden" name="_token" value="{{ csrf_token('delete-' ~ contact.id) }}">
+        <button type="submit">Delete</button>
+    </form>
+
     <a href="{{ path('app_home') }}">Back to list</a>
 {% endblock %}
